@@ -1,0 +1,378 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>视频云台控制</title>
+    <style>
+        body{
+            padding: 0px;
+            margin: 0px;
+        }
+        .close
+        {
+            position: absolute;
+            right: 0px;
+            bottom: 5px;
+            z-index: 999;
+        }
+
+        .close .item
+        {
+             width: 20px;
+             height: 20px;
+             display: inline-block;
+             z-index: 999;
+        }
+
+        .op_screenshot {
+          position: absolute;
+          left: 10px;
+          top: 0px;
+          z-index: 999;
+        }
+
+        .op_sc {
+          position: absolute;
+          left: 10px;
+          top: 70px;
+          z-index: 999;
+        }
+
+        .op img
+        {
+            width: 46px;
+            height: 46px;
+        }
+
+        .pie {
+    position: relative;
+    width: 90px;
+    height: 130px;
+    margin-top:150px;
+    background-repeat: no-repeat;
+    background-color: #dee2e7;
+    border-radius: 50%;
+}
+.center{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    top: 32%;
+    left: 32%;
+    border-radius: 50%;
+    background-color: #1C7DFA;
+    text-align: center;
+    transform:rotate(90deg);
+}
+.center span{
+    color: #ffffff;
+    font-size: 12px;
+}
+.slice {
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+  right: 0;
+	width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+}
+
+.slice-one {
+  transform: rotate(-22.5deg) skewY(-45deg);
+}
+.slice-one .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:36px;
+    margin-left:16px;
+    width: 10px;
+    height: 10px;
+    color: #bec4cf;
+}
+.slice-two {
+  transform: rotate(22.5deg) skewY(-45deg);
+
+}
+.slice-two .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:32px;
+    margin-left:10px;
+    width: 10px;
+    height: 10px;
+}
+.slice-three {
+  transform: rotate(67.5deg) skewY(-45deg);
+
+}
+.slice-three .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:36px;
+    margin-left:18px;
+    width: 10px;
+    height: 10px;
+     color: #bec4cf;
+}
+.slice-four {
+  transform: rotate(112.5deg) skewY(-45deg);
+}
+.slice-four .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:34px;
+    margin-left:10px;
+    width: 10px;
+    height: 10px;
+     color: #bec4cf;
+}
+.slice-five {
+  transform: rotate(157.5deg) skewY(-45deg);
+}
+.slice-five .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:36px;
+    margin-left:18px;
+    width: 10px;
+    height: 10px;
+     color: #bec4cf;
+}
+.slice-six {
+  transform: rotate(202.5deg) skewY(-45deg);
+
+}
+.slice-six .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:32px;
+    margin-left:18px;
+    width: 10px;
+    height: 10px;
+     color: #bec4cf;
+}
+.slice-seven {
+  transform: rotate(247.5deg) skewY(-45deg);
+}
+.slice-seven .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:34px;
+    margin-left:18px;
+    width: 10px;
+    height: 10px;
+    color: #bec4cf;
+}
+.slice-eight {
+  transform: rotate(292.5deg) skewY(-45deg);
+}
+.slice-eight .item{
+    transform: skewY(45deg) rotate(-67.5deg);
+    margin-top:38px;
+    margin-left:10px;
+    width: 10px;
+    height: 10px;
+    color: #bec4cf;
+}
+    </style>
+</head>
+<body>
+    <div class="close">
+       <img src="../img/video/full/py_delte.png" class="item" id="closeBtn" />
+    </div>
+    <div class="op">
+        <a class="op_screenshot" id="screenshotBtn">
+            <img src="../img/video/full/screenshot.png" />
+        </a>
+        <a class="op_sc" id="addPresetBtn">
+            <img src="../img/video/full/sc.png"  />
+        </a>
+
+    </div>
+    <ul class="pie">
+        <li
+          class="slice-one slice"
+          id="direction_one"
+        >
+          <img src="../img/video/full/sj.png" class="item"/>
+        </li>
+        <li
+          class="slice-two slice"
+          id="direction_two"
+        >
+        </li>
+        <li
+          class="slice-three slice"
+          id="direction_three"
+         >
+          <img src="../img/video/full/sj.png" class="item"/>
+        </li>
+        <li
+          class="slice-four slice"
+          id="direction_four"
+        >
+        </li>
+        <li
+          class="slice-five slice"
+          id="direction_five"
+        >
+          <img src="../img/video/full/sj.png" class="item"/>
+        </li>
+        <li
+          class="slice-six slice"
+          id="direction_six"
+        >
+        </li>
+        <li
+          class="slice-seven slice"
+          id="direction_seven"
+        >
+         <img src="../img/video/full/sj.png" class="item"/>
+        </li>
+        <li
+          class="slice-eight slice"
+          id="direction_eight"
+        >
+        </li>
+        <div class="center">
+          <span id="directionText">
+              已停止
+          </span>
+        </div>
+      </ul>
+</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajaxRequest.js"></script>
+<script type="text/javascript">
+    var pageParam;
+    apiready = function () {
+        pageParam=getPageParamData();
+        document.getElementById("closeBtn").addEventListener('click', function () {
+            api.execScript({
+              frameName:  pageParam.frameName,
+              script: 'closeGateControlFrame();'
+             })
+        })
+        document.getElementById("screenshotBtn").addEventListener('click', function () {
+            api.execScript({
+              frameName:  pageParam.frameName,
+              script: 'snapShotEvent();'
+             })
+        })
+        var timer=null
+        document.getElementById("addPresetBtn").addEventListener('click', function () {
+
+             api.closeFrame({
+                name: 'AddPresetFrame'
+              })
+              api.openFrame({
+                name: 'AddPresetFrame',
+                url: './frm_AddPreset.html',
+                pageParam: {
+                  data: {
+                    deviceNum: pageParam.deviceNum
+                  }
+                },
+                bounces: false,
+                rect: {
+                  marginTop: api.winHeight / 5,
+                  marginLeft: api.winWidth / 10,
+                  marginBottom: api.winHeight / 5,
+                  marginRight: api.winWidth / 10
+                }
+              })
+             if(timer)
+             {
+                clearTimeout(timer)
+             }
+             timer=setTimeout(function(){
+              api.execScript({
+                frameName:  pageParam.frameName,
+                script: 'fullScreen(false);'
+              })
+              clearTimeout(timer)
+              timer=null
+             },200)
+        })
+        BindEventForAllLi();
+    }
+
+    // 获取请求参数
+    function getPageParamData() {
+        var pageParam = {}
+        var data = api.pageParam.data
+        pageParam.deviceNum = data.deviceNum
+        pageParam.frameName=data.frameName
+        pageParam.supportEightPonit=data.supportEightPonit
+        return pageParam
+    }
+
+    //为所有li绑定事件
+    function BindEventForAllLi()
+    {
+        BindEvent('direction_three','上',0)
+        BindEvent('direction_seven','下',1)
+        BindEvent('direction_one','左',2)
+        BindEvent('direction_five','右',3)
+        if(pageParam.supportEightPonit)
+        {
+          BindEvent('direction_two','左上',4)
+          BindEvent('direction_four','右上',6)
+          BindEvent('direction_six','右下',7)
+          BindEvent('direction_eight','左下',5)
+        }
+    }
+
+    function BindEvent(btnId,directionText,direction)
+    {
+      document.getElementById(btnId).addEventListener('touchstart', function (e) {
+        e.preventDefault()
+        startGateControl(directionText,direction)
+      })
+
+      document.getElementById(btnId).addEventListener('touchmove', function (e) {
+        e.preventDefault()
+      })
+
+      document.getElementById(btnId).addEventListener('touchend', function (e) {
+         e.preventDefault()
+         endGateControl(direction)
+      })
+    }
+
+    function startGateControl (directionText, direction) {
+      setDirectionText(directionText)
+      gateControl(pageParam.deviceNum,0,direction)
+    }
+
+    function endGateControl(direction)
+    {
+       setDirectionText('已停止')
+       gateControl(pageParam.deviceNum,1,direction)
+    }
+
+    function gateControl(deviceNum, commondType, direction, speed, index, presetName, imageURI)
+    {
+      speed=speed||1
+      index=index||0,
+      presetName=presetName||''
+      imageURI=imageURI||''
+      var url=getAppGlobalConfig().hostConfig.appHost['video'] +'/api/Cloud/GateControllerTest'
+      var data={
+        DeviceNum:deviceNum,
+        CommondType:commondType,
+        Direction:direction,
+        Speed:speed,
+        Index:index,
+        PresetName:presetName,
+        ImageURI:imageURI
+      }
+      postHttp(url,data,function(ret,err){
+      })
+    }
+
+    function setDirectionText(directionText)
+    {
+        document.getElementById("directionText").innerHTML=directionText;
+    }
+</script>

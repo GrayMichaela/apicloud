@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>视频截屏纪录</title>
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+            background-color: azure;
+        }
+
+        .captureScreen-header {
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #AEBBC2;
+            text-align: center;
+        }
+
+        .captureScreen-header .left {
+            position: absolute;
+            left: 20px;
+            top: 3px;
+            display: block;
+        }
+
+        .captureScreen-header .right {
+            position: absolute;
+            right: 20px;
+            top: 3px;
+            display: block;
+            color: #F36C60;
+        }
+
+        .captureScreen-header .title {
+            font-size: 18px;
+            color: #222328;
+            font-weight: 600;
+        }
+
+        .captureScreen-grid {
+            box-sizing: border-box;
+            font-size: 12px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .captureScreen-grid-items {
+            margin-bottom: 10px;
+        }
+
+        .captureScreen-grid-title {
+            color: #7E87AD;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .captureScreen-grid-items {}
+
+        .captureScreen-grid-item {
+            display: inline-block;
+            box-sizing: border-box;
+            width: 33%;
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .captureScreen-grid-item .deleteItem {
+            position: absolute;
+            right: 0px;
+            top: -2px;
+            display: block;
+            z-index: 999
+        }
+
+        .captureScreen-grid-item img {
+            display: inline-block;
+            width: 90px;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="captureScreen">
+        <div class="captureScreen-header" id="header">
+            <a class="left" @click="handleBack">
+                <img src="../img/video/small/back.png" style="width: 18px;height: 18px">
+            </a>
+            <span class="title">截屏纪录</span>
+            <a class="right" @click="handleShowDelete">
+                <img src="../img/video/small/delete.png" style="width: 18px;height: 18px" v-if="!isShowDelete">
+                <span v-else>取消</span>
+            </a>
+        </div>
+        <div class="captureScreen-grid" id="captureScreenContent" style="display: none" ref="captureScreenContent">
+            <div class="captureScreen-grid-group" v-for="(group, index) in captureScreenList" :key="index">
+                <div class="captureScreen-grid-title">{{ group.text }}</div>
+                <div class="captureScreen-grid-items">
+                    <div class="captureScreen-grid-item" v-for="(item, cindex) in group.imgList" :key="cindex">
+                        <img :src="item.ImageBase64" />
+                        <a class="deleteItem" v-if="isShowDelete" @click="handleDeleteItem(item.Id)">
+                            <img src="../img/video/small/delete_item.png" style="width: 15px;height: 15px">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script type="text/javascript">
+    var pageParam;
+    apiready = function () {
+        pageParam = getPageParamData()
+        var totalCount, allloadCount, pageIndex
+        totalCount = -1
+        allloadCount = 0
+        pageIndex = 1
+        var vm = new Vue({
+            el: '#captureScreen',
+            data: {
+                captureScreenList: [],
+                pageSize: 15,
+                isShowDelete: false
+            },
+            mounted: function () {
+                this.loadData()
+                this.$nextTick(function () {
+                    this.$refs.captureScreenContent.style.display = "block"
+                })
+            },
+            methods: {
+                handleBack() {
+                    api.closeFrame({
+                        name: 'allCaptureScreen'
+                    })
+                },
+                loadData: function () {
+                    if (totalCount != -1 && totalCount <= allloadCount) {
+                        return;
+                    }
+                    api.showProgress({
+                        title: '努力加载中...',
+                        text: '正在加载截屏数据...',
+                        modal: true
+                    })
+                    var url = getAppGlobalConfig().hostConfig.appHost['video'] + '/api/Cloud/GetCaptureScreen'
+                    url = url + "?deviceNum=" + pageParam.deviceNum + "&pageIndex=" + pageIndex + "&pageSize=" + this.pageSize
+                    var that = this
+                    getHttp(url, function (ret, err) {
+                        api.hideProgress()
+                        if (ret) {
+                            var data = ret.Data.Rows
+                            totalCount = ret.Data.Total
+                            allloadCount = allloadCount+data.length
+                            that.dealData(data)
+                            api.refreshHeaderLoadDone();
+                            pageIndex++
+                        }
+                        else {
+                            api.toast({
+                                msg: '获取截屏数据失败，请刷新重试!',
+                            })
+                        }
+                    })
+                },
+                dealData: function (data) {
+                    if (!data || data.length == 0) {
+                        return
+                    }
+                    var allDay = this.getALLDay(data)
+                    var that = this
+                    allDay.forEach(function (item, index) {
+                        var group = that.getGroupInGroups(item);
+                        if (group) {
+                            var imgList = that.getImgListByDay(item, data);
+                            imgList.forEach(function (item, index) {
+                                group.imgList.push(item)
+                            })
+                        }
+                        else {
+                            var group = {}
+                            group.text = item
+                            group.imgList = that.getImgListByDay(item, data);
+                            that.captureScreenList.push(group)
+                        }
+
+                    })
+                },
+                getGroupInGroups: function (day) {
+                    var group = null;
+                    this.captureScreenList.forEach(function (item, index) {
+                        if (item.text == day) {
+                            group = item
+                        }
+                    })
+                    return group;
+                },
+                getALLDay: function (data) {
+                    var allDay = []
+                    var day = ''
+                    var that = this;
+                    data.forEach(function (item, index) {
+                        if (day == '' || day != item.AddDay) {
+                            day = item.AddDay
+                            allDay.push(item.AddDay)
+                        }
+                    });
+                    return allDay
+                },
+                getImgListByDay: function (day, data) {
+                    var imgList = []
+                    data.forEach(function (item, index) {
+                        if (item.AddDay == day) {
+                            imgList.push(item)
+                        }
+                    });
+                    return imgList;
+                },
+                handleShowDelete: function () {
+                    this.isShowDelete = !this.isShowDelete
+                },
+                handleDeleteItem: function (id) {
+                    var that=this;
+                    api.confirm({
+                        title: '您确定要删除该截屏吗？',
+                        buttons: ['确定', '取消']
+                    }, function (ret, err) {
+                        var index = ret.buttonIndex
+                        if(index==1)
+                        {
+                            var url = getAppGlobalConfig().hostConfig.appHost['video'] + '/api/Cloud/DeleteCaptureScreenBatch'
+                            var ids=[]
+                            ids.push(id)
+                            var data={
+                                ids:ids
+                            }
+                            postHttp(url,data,function(ret,err){
+                                if(ret)
+                                {
+                                    that.captureScreenList.forEach(function(group,index) {
+                                       group.imgList.forEach(function(item,cindex){
+                                            if(item.Id==id)
+                                            {
+                                                group.imgList.splice(cindex, 1);
+                                            }
+                                       })
+                                   })
+                                }
+                                else
+                                {
+                                    api.toast({
+                                        msg: '删除截屏数据失败,请稍后再试',
+                                    });
+                                }
+                            })
+                        }
+                    });
+                }
+            }
+        })
+
+        api.setRefreshHeaderInfo({
+            textDown: '下拉刷新...',
+            textUp: '松开刷新...',
+        }, function (ret, err) {
+            if (totalCount != -1 && totalCount <= allloadCount) {
+                api.toast({
+                    msg: '截屏数据已全部加载',
+                });
+                api.refreshHeaderLoadDone();
+            }
+            else {
+                vm.loadData();
+            }
+        })
+    }
+
+    // 获取请求参数
+    function getPageParamData() {
+        var pageParam = {}
+        var data = api.pageParam.data
+        pageParam.deviceNum = data.deviceNum
+        return pageParam
+    }
+</script>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+    <title>新增预置点</title>
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+        .content
+        {
+            background-color: #FFFFFF;
+            border-radius: 4%;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 20px;
+            padding-bottom: 20px;
+            border: 1px solid rgb(222, 228, 231);
+        }
+        .header
+        {
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 16px;
+            color: #222328;
+            font-weight: 600;
+        }
+        .imgArea
+        {
+            width: 100%;
+            height: 150px
+        }
+        .imgArea img
+        {
+            width: 100%;
+            height: 150px
+        }
+        .btnArea
+        {
+            text-align: center;
+        }
+        .btn
+        {
+            border: none;
+            display: inline-block;
+            width: 90%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="AddPresetContainer">
+        <div class="content" ref="content" style="display: none">
+            <div class="header">
+               新增收藏站点
+            </div>
+            <div class="imgArea">
+                <img :src="imageURI" />
+            </div>
+            <div>
+                <van-field v-model="presetName" placeholder="请为该收藏站点命名" />
+            </div>
+            <div class="btnArea">
+                <van-button type="info" size="large" style="margin-bottom: 10px" class="btn" @click="handleSave">确定</van-button>
+                <van-button type="defalut" size="large" class="btn" @click="handleClose">取消</van-button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+<script type="text/javascript" src="../script/snapShotFile.js"></script>
+<script type="text/javascript">
+    var pageParam;
+    apiready = function () {
+        pageParam = getPageParamData()
+        var Vue = window.Vue;
+        var vant = window.vant;
+        Vue.use(vant);
+        var vm = new Vue({
+            el: '#AddPresetContainer',
+            data: {
+                imageURI:'',
+                presetName:''
+            },
+            mounted: function () {
+                this.init()
+                this.$nextTick(function () {
+                    this.$refs.content.style.display = "block"
+                })
+            },
+            methods: {
+                init()
+                {
+                    var that=this
+                    window.initSnapShotDir(pageParam.deviceNum)
+                    window.createSnapShotFile(snapShotPlay).then(function(base64Img){
+                        that.imageURI=base64Img
+                    }).catch(() => {
+                        api.toast({
+                            msg: '抓取截屏失败'
+                        });
+                    })
+                },
+                handleSave()
+                {
+                    if(this.presetName=='')
+                    {
+                        api.toast({
+                            msg: '请输入收藏站点名称'
+                        });
+                        return
+                    }
+                    if(this.imageURI=='')
+                    {
+                        api.toast({
+                            msg: '抓取截屏失败，请成功后再保存'
+                        });
+                        return
+                    }
+                    var url=getAppGlobalConfig().hostConfig.appHost['video'] +'/api/Cloud/GateControllerTest'
+                    var data={
+                        DeviceNum:pageParam.deviceNum,
+                        CommondType:3,
+                        PresetName:this.presetName,
+                        ImageURI:this.imageURI
+                    }
+                    var that=this
+                    postHttp(url,data,function(ret,err) {
+                        if(ret)
+                        {
+                          api.toast({
+                            msg: '保存收藏站点成功'
+                           });
+                           that.handleClose()
+                        }
+                        else
+                        {
+                            api.toast({
+                            msg: '保存收藏站点失败'
+                           });
+                        }
+                    })
+                },
+                handleClose()
+                {
+                    api.closeFrame({
+                        name: 'AddPresetFrame'
+                    })
+                }
+            }
+        })
+    }
+
+    // 获取请求参数
+    function getPageParamData() {
+        var pageParam = {}
+        var data = api.pageParam.data
+        pageParam.deviceNum = data.deviceNum
+        return pageParam
+    }
+    //截屏
+    function snapShotPlay()
+    {
+       api.execScript({
+        frameName: 'frm_SPlayer',
+        script: 'snapShotPlay();'
+      })
+    }
+</script>
