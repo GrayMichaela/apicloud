@@ -90,10 +90,9 @@
         playUrl = pageParam.sdUrl
         alivcLivePlayer = api.require('alivcLivePlayer')
         connectionType = api.connectionType
-
         init()
         initPlayer()
-
+        
         // 监听网络变化
         api.addEventListener({
             name: 'online'
@@ -115,7 +114,7 @@
     }
 
     function init() {
-        snapShotDir='fs://myvideo/'+pageParam.deviceNum
+        //snapShotDir='fs://myvideo/'+pageParam.deviceNum
         uiButtonArray = [
             {
                 title: '播放',
@@ -381,6 +380,7 @@
 
     // 初始化播放器
     function initPlayer() {
+        alert('alivcLivePlayer')
         var params = {
             rect: pageParam.rectPlayer,
             fixedOn: pageParam.frameName,
@@ -388,6 +388,7 @@
         }
         alivcLivePlayer.initPlayer(params, function (ret) {
             if (api.systemType === 'android') {
+                alert('ret.status')
                 if (ret.status) {
                     readyPlayer()
                     playEvent()
@@ -430,7 +431,9 @@
                     url: playUrl
                 },
                 function (ret) {
+                    alert(ret.status)
                     if (ret.status && pageParam.auto) {
+                        alert('5')
                         startPlay()
                     } else {
                         console.log('安卓预览失败', JSON.stringify(ret))

@@ -1,0 +1,109 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-09 16:55:06
+ * @Description: 上报问题
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>上报问题</title>
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .report-question {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            background-color: #F6F6F6;
+        }
+
+        .report-question .header {
+            position: relative;
+            box-sizing: border-box;
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            font-size: 17px;
+            color: #0C1648;
+            border-bottom: 0.5px solid #EBEBEB;
+        }
+
+        .report-question .header .btn-back {
+            position: absolute;
+            left: 15px;
+        }
+
+        .report-question .content {
+            min-height: 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="reportQuestion" class="report-question">
+        <div class="header" id="header">
+            <span class="iconfont iconfanhui btn-back" @click="close()"></span>
+            <div class="title">报告问题</div>
+        </div>
+        <div class="content">
+            <van-field v-model="value" label="文本" placeholder="请输入用户名" />
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="../../script/map/inspection-helper.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+
+<script type="text/javascript">
+    apiready = function () {
+        var Vue = window.Vue;
+        var vant = window.vant;
+        Vue.use(vant);
+
+        new Vue({
+            el: '#reportQuestion',
+            data() {
+                return {
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                close(){
+                    window.api.closeFrame({
+                        name: 'frame_report_question'
+                    })
+                }
+            },
+        })
+    }
+</script>

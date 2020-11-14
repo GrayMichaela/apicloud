@@ -1,0 +1,112 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-10 18:51:33
+ * @Description:
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>地图定位与缩放</title>
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        #locationZoom {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #locationZoom .location {
+            background-color: #fff;
+            border-radius: 4px;
+            width: 40px;
+            height: 40px;
+            font-size: 22px;
+            color: #51575B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #locationZoom .zoom {
+            background-color: #fff;
+            border-radius: 4px;
+            width: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #51575B;
+            margin-top: 10px;
+        }
+
+        #locationZoom .zoom div {
+            padding: 7px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="locationZoom">
+        <div class="location" @click="zoomToCenterAndScale()">
+            <span class="iconfont icondangqianweizhi"></span>
+        </div>
+        <div class="zoom">
+            <div class="zoom-in" @click="zoomIn()">
+                <span class="iconfont iconfangda"></span>
+            </div>
+            <div class="zoom-out" @click="zoomOut()">
+                <span class="iconfont iconsuoxiao" style="font-size: 10px"></span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        new Vue({
+            el: '#locationZoom',
+            data: {
+                lzzMap: null
+            },
+            mounted() {
+                this.lzzMap = window.api.require('lzzMap')
+            },
+            methods: {
+                zoomIn() {
+                    this.lzzMap.zoomIn()
+                },
+                zoomOut() {
+                    this.lzzMap.zoomOut()
+                },
+                zoomToCenterAndScale() {
+                    this.lzzMap.zoomToCenterAndScale();
+                }
+            },
+        })
+    }
+</script>

@@ -1,0 +1,169 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-10 14:55:27
+ * @Description:
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>代办任务</title>
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .agent-task {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+            border-radius: 5px;
+            position: relative;
+        }
+        .agent-task .btn-agent {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 10px;
+            left: 0;
+            border-radius: 4px;
+            color: #51575B;
+        }
+        .agent-task .btn-agent .count{
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #F65D4D;
+            font-size: 12px;
+            color: #fff;
+            position: absolute;
+            top: -8px;
+            left: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .agent-task .agent-task-wrapper{
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            box-sizing: border-box;
+        }
+        .agent-task .header{
+            position: relative;
+            width: 100%;
+            height: 42px;
+            border-bottom: 1px solid #E8E8E8;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+        .agent-task .header .iconfont-task{
+            margin-right: 10px;
+        }
+        .agent-task .header .count{
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #F65D4D;
+            font-size: 12px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+        }
+        .agent-task .header .left{
+            display: flex;
+            align-items: center;
+        }
+        .agent-task .header .btn-back{
+            color: #A1A6BA;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="agentTask" class="agent-task">
+        <div v-if="isShow" class="btn-agent">
+            <span class="iconfont iconrenwuliebiao" @click="openTask"></span>
+            <span v-if="isShow" class="count">2</span>
+        </div>
+        <div v-else class="agent-task-wrapper">
+            <div class="header">
+                <div class="left">
+                    <span class="iconfont iconrenwuliebiao iconfont-task"></span>
+                    <span>待办任务</span>
+                    <span class="count">2</span>
+                </div>
+                <div class="iconfont iconfanhui btn-back" @click="closeTask"></div>
+            </div>
+            <div class="content">待办任务具体列表</div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#agentTask',
+            data() {
+                return{
+                    isShow: true
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                openTask() {
+                    window.api.setFrameAttr({
+                        name: 'frame_map_agent_task',
+                        bounces: false,
+                        rect: {
+                            x: 15,
+                            y: 140,
+                            w: window.api.winWidth * 0.78,
+                            h: 350
+                        },
+                    });
+                    this.isShow = false
+                },
+                closeTask(){
+                    window.api.setFrameAttr({
+                        name: 'frame_map_agent_task',
+                        bounces: false,
+                        rect: {
+                            x: 15,
+                            y: 130,
+                            w: 50,
+                            h: 50
+                        },
+                    });
+                    this.isShow = true
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

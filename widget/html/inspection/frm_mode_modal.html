@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>巡检模式</title>
+    <link rel="stylesheet" type="text/css" href="../../iconfont/iconfont.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mode-modal {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .45);
+            z-index: 99;
+        }
+
+        .mode-modal-wrapper {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 55%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 100;
+        }
+
+        .mode-modal-wrapper .title {
+            padding: 10px;
+            background-color: #f8f8f8;
+        }
+
+        .mode-modal-wrapper .items {
+            display: flex;
+            align-items: content;
+            justify-content: space-between;
+        }
+
+        .mode-modal-wrapper .items .item {
+            font-size: 12px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mode-modal-wrapper .mode-item-active {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="modeModal" class="mode-modal">
+        <div class="mask" @click="cancel"></div>
+        <div class="mode-modal-wrapper">
+            <div>
+                <div class="title">模式</div>
+                <div class="items">
+                    <div v-for="item in modes" :key="item.id"
+                        :class="['item', modeType===item.type&&'mode-item-active']"
+                        @click="handleModeChange(item.id, item.type)">
+                        <div>{{ item.name }}</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div v-for="item in content" :key="item.title">
+                    <div class="title">{{ item.title }}</div>
+                    <div class="items">
+                        <div v-for="itm in item.data" :key="item.id" class="item" @click="handleClick(itm)">
+                            <div>{{ itm.name }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="../../script/map/mode-config.js"></script>
+<script type="text/javascript" src="../../script/map/inspection-helper.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        new Vue({
+            el: '#modeModal',
+            data: {
+                isShow: false,
+                modes: getInspectionModes() || [],
+                content: [],
+                modeType: '',
+                lzzMap: null,
+            },
+            mounted() {
+                this.lzzMap = window.api.require('lzzMap')
+                this.modeType = window.$api.getStorage('modeTypeName') || 'inspection'
+                this.content = getDataByMode()[this.modeType]
+            },
+            methods: {
+                cancel() {
+                    this.closeFrame('frame_mode_modal')
+                },
+                handleModeChange(id, type) {
+                    this.modeType = type
+                    window.$api.setStorage('modeTypeName', type);
+                    this.content = getDataByMode()[type]
+                    // 巡林模式
+                    if (type === 'inspection') {
+                        this.closeFrame('frame_map_search')
+                        InspectionHelper.openWeatherFrame()
+                        InspectionHelper.openSearchFrame()
+                        InspectionHelper.openAgentTaskFrame()
+                        InspectionHelper.openToolbarFrame()
+                    }
+                    if (type === 'supervision' || type === 'resource') {
+                        this.closeFrame('frame_weather')
+                        this.closeFrame('frame_map_agent_task')
+                        this.closeFrame('frame_map_toolbar')
+                    }
+                    if (type === 'resource') {
+                        InspectionHelper.openResourceLegend()
+                    } else {
+                        this.closeFrame('frame_resource_legend')
+                    }
+                    this.changeMapMode(id)
+                },
+                // 切换模式
+                changeMapMode(mode) {
+                    this.lzzMap.changeMapMode({
+                        mapMode: mode
+                    }, function (ret, err) {
+                    });
+                },
+                handleClick(item) {
+                    this.lzzMap[item.eventName]({
+                        baseLayerType: item.id
+                    }, function (ret, err) {
+                        // alert(ret)
+                    })
+                },
+                closeFrame(frameName) {
+                    window.api.closeFrame({
+                        name: frameName
+                    })
+                }
+            }
+        })
+    }
+</script>

@@ -1,53 +1,54 @@
- <widget id="A6044996323351"  version="1.0.0">
+<widget id="A6044996323351" version="1.0.0">
+	<name>WJSPAAPPFrame</name>
 
-    <name>WJSPAAPPFrame</name>
-
-    <description>
+	<description>
 
        林长制APP
 
     </description>
 
-    <author email="developer@apicloud.com" href="http://www.apicloud.com">
+	<author email="developer@apicloud.com" href="http://www.apicloud.com">
 
         Developer
 
     </author>
 
-    <content src="index.html" />
+	<content src="index.html" />
 
-    <access origin="*" />
+	<access origin="*" />
 
-    <preference name="pageBounce" value="false"/>
+	<preference name="pageBounce" value="false" />
 
 	<!-- window.navigation.userAgent追加标识,识别环境。 -->
 	<preference name="userAgent" value="APICloud" />
 
-	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+	<preference name="appBackground" value="rgba(0,0,0,0.0)" />
 
-	<preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+	<preference name="windowBackground" value="rgba(0,0,0,0.0)" />
 
-	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)" />
 
-	<preference name="hScrollBarEnabled" value="false"/>
+	<preference name="hScrollBarEnabled" value="false" />
 
-	<preference name="vScrollBarEnabled" value="false"/>
+	<preference name="vScrollBarEnabled" value="false" />
 
-	<preference name="autoLaunch" value="true"/>
+	<preference name="autoLaunch" value="true" />
 
-	<preference name="fullScreen" value="false"/>
+	<preference name="fullScreen" value="false" />
 
 	<preference name="autoUpdate" value="true" />
 
 	<preference name="smartUpdate" value="false" />
 
-	<preference name="debug" value="true"/>
+	<preference name="debug" value="true" />
 
-	<preference name="statusBarAppearance" value="true"/>
+	<preference name="statusBarAppearance" value="true" />
 
 	<preference name="softInputBarEnabled" value="true" />
-	
-    <preference name="softInputMode" value="auto"/>
+
+	<preference name="softInputMode" value="auto" />
+
+	<preference name="backgroundMode" value="location"/>
 
 	<permission name="readPhoneState" />
 
@@ -66,15 +67,20 @@
 	<permission name="hardware" />
 
 	<feature name="tencentPush">
-        <param name="android_accessId" value="2100332816" />
-        <param name="android_accessKey" value="A9B97HURX56M" />
-    </feature>
+		<param name="android_accessId" value="2100332816" />
+		<param name="android_accessKey" value="A9B97HURX56M" />
+	</feature>
 	<!-- <feature name="aMapLocation">
        <param name="android_api_key" value="5d2937901f02d6c87e2bccedac7028ca"></param>
        <param name="ios_api_key" value="请配置iOS key" ></param>
     </feature> -->
-    <feature name="bMap">
-     <param name="android_api_key" value="cQW5YVWrIFiITHdl0pAxoS7hKzPj1Xho" />
-     <param name="ios_api_key" value="请配置iOS key" />
-   </feature>
+	<!-- <feature name="bMap">
+		<param name="android_api_key" value="cQW5YVWrIFiITHdl0pAxoS7hKzPj1Xho" />
+		<param name="ios_api_key" value="请配置iOS key" />
+	</feature> -->
+	<!-- 百度api -->
+	<feature name="bmLocation">    
+		<param name="ios_api_key" value="zGsO3wqa6EhOkCjSbMvG2Pv2RACtwGBN" />  
+	</feature>
+	<meta-data name="com.baidu.lbsapi.API_KEY" value="zGsO3wqa6EhOkCjSbMvG2Pv2RACtwGBN" />
 </widget>

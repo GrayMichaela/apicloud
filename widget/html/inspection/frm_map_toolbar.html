@@ -1,0 +1,120 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-10 18:45:27
+ * @Description: 巡林地图左侧工具
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>地图左侧工具</title>
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .map-tool-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 4px;
+            background-color: #fff;
+            flex: 1;
+        }
+        .map-tool-wrapper .item{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-family: PingFang SC, PingFang SC-Bold;
+            font-weight: 700;
+            color: #475074;
+            width: 100%;
+            flex: 1;
+        }
+        .map-tool-wrapper .item:not(:last-child){
+            border-bottom: 1px solid #A1A6BA;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mapToolbar" class="map-tool-wrapper">
+        <div class="item" @click="handleReport()">
+            <span class="iconfont iconshangbao"></span>
+            <div>上报</div>
+        </div>
+        <div class="item" @click="handleMarker()">
+            <span class="iconfont iconbiaoji"></span>
+            <div>标记</div>
+        </div>
+        <div class="item">
+            <span class="iconfont iconceju"></span>
+            <div>测距</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/map/inspection-helper.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+
+<script type="text/javascript">
+    apiready = function () {
+        new Vue({
+            el: '#mapToolbar',
+            data: {
+            },
+            mounted() {
+            },
+            methods: {
+                // 上报
+                handleReport() {
+                    window.api.openFrame({
+                        name: 'frame_report_question',
+                        url: './frm_report_question.html',
+                        bounces: false,
+                        rect: {
+                            x: 0,
+                            y: 31,
+                        },
+                        vScrollBarEnabled: false,
+                        hScrollBarEnabled: false,
+                    })
+                },
+                // 标记
+                handleMarker(){
+                    window.api.openFrame({
+                        name: 'frame_marker',
+                        url: './frm_marker.html',
+                        bounces: false,
+                        rect: {
+                            x: 0,
+                            y: window.api.winHeight / 2 + 60,
+                        },
+                        vScrollBarEnabled: false,
+                        hScrollBarEnabled: false,
+                    })
+                }
+            },
+        })
+    }
+</script>

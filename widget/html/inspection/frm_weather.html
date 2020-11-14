@@ -1,0 +1,64 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-10 10:57:52
+ * @Description: 天气信息
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>天气</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .weather {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0 10px;
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .weather .weather-wrapper {
+            font-size: 13px;
+            color: #0E154A;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="weather" class="weather">
+        <span class="iconfont"></span>
+        <span class="weather-wrapper">12-18 C 西南风2级 未来三小时没有雨</span>
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#weather',
+            data: {
+            },
+            mounted() {
+            },
+            methods: {
+            },
+        })
+    </script>
+</body>
+
+</html>

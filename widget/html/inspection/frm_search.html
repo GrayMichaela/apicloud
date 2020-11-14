@@ -1,0 +1,133 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-10 11:52:45
+ * @Description:
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>搜索</title>
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .map-search {
+            position: relative;
+            /* border: 1px solid red; */
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .map-search .search {
+            width: calc(100% - 45px);
+            height: 100%;
+            box-sizing: border-box;
+            border-top-left-radius: 18px;
+            border-bottom-left-radius: 18px;
+            background-color: rgba(255, 255, 255, 1);
+            border: none;
+            padding: 0 10px;
+        }
+        .map-search .search:focus{ border: none }
+        .map-search .btn-search {
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            background-color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            right: 15px;
+        }
+        .map-search .btn-search-active{
+            background-color: #26B28F;
+            color: #fff;
+        }
+
+        .map-search .btn-search .span {
+            font-size: 20px;
+            color: #51575B;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mapSearch" class="map-search">
+        <input v-if="isShowSearch" type="text" placeholder="请输入地名进行搜索" class="search" />
+        <div :class="['btn-search', isShowSearch && 'btn-search-active']" @click="handleSearch()">
+            <span class="iconfont iconsousuo1"></span>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        new Vue({
+            el: '#mapSearch',
+            data() {
+                return {
+                    isShowSearch: false
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                handleSearch() {
+                    if (this.isShowSearch) {
+                        window.api.setFrameAttr({
+                            name: 'frame_map_search',
+                            bounces: false,
+                            rect: {
+                                x: window.api.winWidth - 55,
+                                y: 90,
+                                h: 40
+                            },
+                        });
+                        this.isShowSearch = false
+                    } else {
+                        window.api.setFrameAttr({
+                            name: 'frame_map_search',
+                            bounces: false,
+                            rect: {
+                                x: 15,
+                                y: 90,
+                                h: 40
+                            },
+                        });
+                        this.isShowSearch = true
+                        window.api.bringFrameToFront({
+                            from: 'frame_map_search',
+                            to: ''
+                        });
+                    }
+                }
+            },
+        })
+    }
+</script>

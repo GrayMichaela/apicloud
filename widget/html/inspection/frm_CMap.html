@@ -1,0 +1,56 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 20:35:54
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-10 18:35:48
+ * @Description:
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>林长制巡林地图</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../../script/map/inspection-helper.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        // alert(window.api.winHeight+'....'+document.body.offsetHeight)
+        const lzzMap = window.api.require('lzzMap')
+        lzzMap.init({
+            x: 0,
+            y: 80,
+            w: window.api.winWidth,
+            h: window.api.winHeight - 130
+        }, function (ret, err) {
+            InspectionHelper.openWeatherFrame()
+            InspectionHelper.openInspectionMode()
+            InspectionHelper.openZoomFrame()
+            InspectionHelper.openToolbarFrame()
+            InspectionHelper.openSearchFrame()
+            // InspectionHelper.openAgentTaskFrame()
+            InspectionHelper.openStartInspectionFrame()
+        })
+    }
+</script>

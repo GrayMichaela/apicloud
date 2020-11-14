@@ -1,0 +1,129 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-06 16:12:42
+ * @Description: 资源监管图例
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>资源监管图例</title>
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .map-legend-wrapper {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+
+        }
+
+        .map-legend-wrapper .header {
+            position: relative;
+            height: 37px;
+            border-bottom: 1px solid #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-legend-wrapper .header .title {
+            margin-left: 36px;
+        }
+
+        .map-legend-wrapper .btn-expand {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="legend" class="map-legend-wrapper">
+        <div v-show="!isShow" @click="display">
+            <span class="iconfont btn-expand">-></span>
+        </div>
+        <div v-show="isShow">
+            <div class="header">
+                <span class="iconfont iconfanhui btn-expand" @click="display"></span>
+                <span class="title">图例</span>
+            </div>
+            <div>
+                图例数据
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        new Vue({
+            el: '#legend',
+            data() {
+                return {
+                    isShow: false
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                display() {
+                    // this.isShow = !this.isShow
+                    // alert(window.api.winHeight)
+                    if (this.isShow) {
+                        window.api.setFrameAttr({
+                            name: 'frame_resource_legend',
+                            bounces: false,
+                            rect: {
+                                x: 15,
+                                y: window.api.winHeight / 2 + 90,
+                                w: 35,
+                                h: 35
+                            },
+                        });
+                        this.isShow = false
+                    } else {
+                        window.api.setFrameAttr({
+                            name: 'frame_resource_legend',
+                            bounces: false,
+                            rect: {
+                                x: 15,
+                                y: window.api.winHeight / 2 + 90,
+                                w: 85,
+                                h: 150
+                            },
+                        });
+                        this.isShow = true
+                    }
+                }
+            },
+        })
+    }
+</script>

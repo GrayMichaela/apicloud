@@ -1,0 +1,176 @@
+<!--
+ * @Author: lilu
+ * @Date: 2020-11-05 09:25:57
+ * @LastEditors: lilu
+ * @LastEditTime: 2020-11-10 09:46:43
+ * @Description: 巡林监管下的统计信息
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>统计信息</title>
+    <link rel="stylesheet" href="../../iconfont/iconfont.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.0/lib/index.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .statistic-info {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 5px;
+        }
+        .statistic-info .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 0;
+        }
+        .statistic-info .btn-collapse{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .statistic-info .content{
+            padding: 5px 10px;
+        }
+        .statistic-info .content .row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="statistic" class="statistic-info">
+        <div class="header">
+            <span class="iconfont iconyanjing_bi"></span>
+            <span>{{ currentDate }}</span>
+        </div>
+        <div v-if="isCollapse" class="content">
+            <div class="row">
+                <div>
+                    <span>巡林总数</span>
+                    <span>3人/次</span>
+                </div>
+                <div>
+                    <span>巡林人数</span>
+                    <span>2人</span>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <span>路程</span>
+                    <span>132.22km</span>
+                </div>
+                <div>
+                    <span>覆盖</span>
+                    <span>35%</span>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <span>新增正常上报</span>
+                    <span>2</span>
+                </div>
+                <div>
+                    <span>新增问题</span>
+                    <span>8</span>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <span>解决问题</span>
+                    <span>2</span>
+                </div>
+                <div>
+                    <span>存续问题</span>
+                    <span>10</span>
+                </div>
+            </div>
+        </div>
+        <div class="btn-collapse">
+            <span v-if="isCollapse" class="iconfont iconxialajiantou" @click="handleCollapse"></span>
+            <span v-else class="iconfont icontianjiawenti" @click="handleCollapse"></span>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/ajaxRequest.js"></script>
+<script type="text/javascript" src="../../script/map/inspection-helper.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vant@2.0/lib/vant.min.js"></script>
+
+<script type="text/javascript">
+    apiready = function () {
+        var Vue = window.Vue;
+        var vant = window.vant;
+        Vue.use(vant);
+
+        new Vue({
+            el: '#statistic',
+            data() {
+                return {
+                    currentDate: '2020-11-09',
+                    isCollapse: false
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                close(){
+                    window.api.closeFrame({
+                        name: 'frame_statistic'
+                    })
+                },
+                handleCollapse(){
+                    if(this.isCollapse) {
+                        window.api.setFrameAttr({
+                            name: 'frame_statistic',
+                            bounces: false,
+                            rect: {
+                                x: 15,
+                                y: 90,
+                                w: window.api.winWidth * 0.8,
+                                h: 40
+                            },
+                        });
+                    } else {
+                        window.api.setFrameAttr({
+                            name: 'frame_statistic',
+                            bounces: false,
+                            rect: {
+                                x: 15,
+                                y: 90,
+                                w: window.api.winWidth * 0.8,
+                                h: 145
+                            },
+                            bgColor: 'red'
+                        });
+                    }
+                    this.isCollapse = !this.isCollapse
+                }
+            },
+        })
+    }
+</script>
